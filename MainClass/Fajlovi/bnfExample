@@ -1,0 +1,8 @@
+<expression> ::= <expression> "+" <term> | <expression> "-" <term> | <term>
+<term> ::= <term> "*" <factor> | <term> "/" <factor> | <factor>
+<factor> ::= <primary> "^" <factor> | <primary>
+<primary> ::= <primary> | <element>
+<element> ::= "(" <expression> ")" | <variable> | <number>
+<number> ::= <digit> | <number> <digit>
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<variable> ::= regex(\w+)

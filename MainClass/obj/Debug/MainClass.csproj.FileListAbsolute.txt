@@ -1,0 +1,6 @@
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\bin\Debug\MainClass.exe
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\bin\Debug\MainClass.pdb
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.csprojAssemblyReference.cache
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.csproj.CoreCompileInputs.cache
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.exe
+C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.pdb
