@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainClass", "MainClass\MainClass.csproj", "{17CA17D9-5233-45D5-B469-AD8AAB12B747}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BNFParser", "BNFParser\BNFParser.csproj", "{17CA17D9-5233-45D5-B469-AD8AAB12B747}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
