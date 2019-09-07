@@ -4,3 +4,9 @@ C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.c
 C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.csproj.CoreCompileInputs.cache
 C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.exe
 C:\Users\filip\RiderProjects\BNFProjectVersion69\MainClass\obj\Debug\MainClass.pdb
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\bin\Debug\MainClass.exe
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\bin\Debug\MainClass.pdb
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\obj\Debug\MainClass.csprojAssemblyReference.cache
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\obj\Debug\MainClass.csproj.CoreCompileInputs.cache
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\obj\Debug\MainClass.exe
+C:\Users\filip\RiderProjects\BNFParserProjectV2\MainClass\obj\Debug\MainClass.pdb

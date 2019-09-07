@@ -4,12 +4,10 @@ namespace MainClass
 {
     public class BNFLineExceptions : Exception
     {
-        public const string lineError = "Error while parsing line num: ";
+        public const string lineError = "Error in line number ";
 
-        public BNFLineExceptions(int lineNum) : base(lineError+lineNum)
+        public BNFLineExceptions(int lineNum, string line) : base(lineError + lineNum + ". : " + line)
         {
         }
-
-
     }
 }
