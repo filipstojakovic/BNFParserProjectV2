@@ -1,6 +1,6 @@
 <expression> ::= <expression> "+" <term> | <expression> "-" <term> | <term>
 <term> ::= <term> "*" <factor> | <term> "/" <factor> | <factor>
-<factor> ::= <primary> "^" <factor> | <primary
+<factor> ::= <primary> "^" <factor> | <primary>
 <primary> ::= <primary> | <element>
 <element> ::= "(" <expression> ")" | <variable> | <number>
 <number> ::= <digit> | <number> <digit>

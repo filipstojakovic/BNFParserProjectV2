@@ -23,6 +23,43 @@ namespace MainClass
             this.checkForDuplicates();
 
             this.swapTableExpressions();
+
+            this.removeNonTerminlNodes();
+        }
+
+        // remove all non-terminal nodes from regex. Ne radi REKURZIJA
+        private void removeNonTerminlNodes()
+        {
+            Regex nonTerminalRegex = new Regex(RegexAndPatterns.nonTerminalRegexString);
+
+            for (int i = 0; i < bnfCollections.Count; i++) // mozda je dovoljno samo za prvi cvor
+            {
+                // bool flag = false;
+
+                Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex);
+                while (nonTerminalMatch.Success)
+                {
+                    bool flag = false;
+                    for (int j = 0; j < bnfCollections.Count; j++)
+                    {
+                        if (nonTerminalMatch.Value == bnfCollections[j].token)
+                        {
+                            bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollections[j].regex + ")");
+                            flag = true;
+                        }
+                    }
+
+
+                    if (flag)
+                        nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex); // u slucaju da postoji jos ne terminalnih cvorova 
+                    else
+                        nonTerminalMatch = nonTerminalMatch.NextMatch();
+                }
+
+                bnfCollections[i].regex = bnfCollections[i].regex.Replace("\"", "");
+                bnfCollections[i].regex = bnfCollections[i].regex.Replace(" |", "|");
+                bnfCollections[i].regex = bnfCollections[i].regex.Replace("| ", "|");
+            }
         }
 
 
@@ -57,13 +94,12 @@ namespace MainClass
                         case "veliki_grad":
                             bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + cityRegexString + ")");
                             break;
-                        
+
                         default:
                             string regexPattern = standardExpressionMatch.Value.Replace("regex(", "");
                             regexPattern = regexPattern.TrimEnd(')');
                             bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + regexPattern + ")");
                             break;
-                            
                     }
 
                     standardExpressionMatch = standardExpressionMatch.NextMatch();
@@ -102,7 +138,7 @@ namespace MainClass
                     bnfCollections.Add(new BNFCollection(splitLine[0], splitLine[1], splitLine[1]));
                 }
                 else
-                    throw new BNFLineExceptions(lineNumber,readLine);
+                    throw new BNFLineExceptions(lineNumber, readLine);
 
                 lineNumber++;
             }

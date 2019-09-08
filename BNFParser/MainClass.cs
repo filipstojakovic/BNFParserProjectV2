@@ -6,8 +6,8 @@ namespace MainClass
     internal class Program
     {
         public const string configFile =
-            @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig1.bnf";
-
+            @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
+        
         public static void Main(string[] args)
         {
 //            Console.WriteLine(RegexAndPatterns.BNFLineRegexString);

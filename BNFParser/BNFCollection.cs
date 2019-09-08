@@ -20,7 +20,7 @@ namespace MainClass
 
         public override string ToString()
         {
-            return "token: "+token + '\n' + "definition: "+definition + '\n' + "regex: "+regex;
+            return "token: "+token + '\n' + /*"definition: "+definition + '\n' +*/ "regex: "+regex;
             
         }
 
