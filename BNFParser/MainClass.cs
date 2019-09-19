@@ -9,13 +9,13 @@ namespace MainClass
 {
     internal class Program
     {
-        public const string configFile1 =
+        public const string configFile =
             @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
-        public const string configFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
+        public const string configFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
 
-        public const string intputFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
-        public const string intputFile = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
+        public const string intputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
+        public const string intputFile1 = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
 
         public const string outputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
 

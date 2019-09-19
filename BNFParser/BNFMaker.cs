@@ -41,7 +41,7 @@ namespace MainClass
                     if (nonTerminalMatch.Value == bnfCollections[i].token)
                     {
                         bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "");
-                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + ")+";
+                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + " ?)+";
                     }
                     else
                     {
@@ -61,20 +61,17 @@ namespace MainClass
                         nonTerminalMatch = nonTerminalMatch.NextMatch();
                 }
 
-                bnfCollections[i].regex = bnfCollections[i].regex.Replace("\"", "");
-                bnfCollections[i].regex = bnfCollections[i].regex.Replace(" |", "|");
-                bnfCollections[i].regex = bnfCollections[i].regex.Replace("| ", "|");
-
-//                bnfCollections[i].token = bnfCollections[i].token.TrimStart('<');
-//                bnfCollections[i].token = bnfCollections[i].token.TrimEnd('>');
+                bnfCollections[i].regex = removeSpaceAndQuote(bnfCollections[i].regex);
             }
 
-            // swap first regex
+            // swap first regex all nonterminal with terminal
             Match firstNonTerminalMatch = nonTerminalRegex.Match(bnfCollections[0].regex);
             while (firstNonTerminalMatch.Success)
             {
                 if (firstNonTerminalMatch.Value == bnfCollections[0].token)
                 {
+                    bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, "");
+                    bnfCollections[0].regex = "(" + bnfCollections[0].regex + "?)+";
                 }
                 else
                 {
@@ -91,10 +88,20 @@ namespace MainClass
                 firstNonTerminalMatch = firstNonTerminalMatch.NextMatch();
             }
 
-            bnfCollections[0].regex = bnfCollections[0].regex.Replace(")+ ", ")+");
+            bnfCollections[0].regex = removeSpaceAndQuote(bnfCollections[0].regex);
 
             for (int i = 0; i < bnfCollections.Count; i++)
                 bnfCollections[i].token = bnfCollections[i].token.Trim('<', '>');
+        }
+
+        //remove spaces and quotes
+        private string removeSpaceAndQuote(string str)
+        {
+            str = str.Replace(")+ ", ")+");
+            str = str.Replace("\"", "");
+            str = str.Replace(" |", "|");
+            str = str.Replace("| ", "|");
+            return str;
         }
 
 
