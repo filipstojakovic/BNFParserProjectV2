@@ -4,4 +4,4 @@
 <direct-object> ::= <article> <noun>
 <article> ::= "THE" | "A"
 <noun> ::= "MAN" | "DOG"
-<verb> ::= "BITES" | "PETS"
+<verb> ::= "BITES" | "PETS" veliki_grad

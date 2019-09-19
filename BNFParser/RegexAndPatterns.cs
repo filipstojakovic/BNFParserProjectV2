@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace MainClass
 {
@@ -28,20 +29,21 @@ namespace MainClass
 
         public const string BNFLineRegexString = "^"+leftSide + "::=" + rightSide + "$";
         //________________________________________________________
-
-        public const string broj_telefona = @"(((00|\+)387\d{2}){0,1}|051|065)[\s\/-]{0,1}\d{3}[\s\\-]{0,1}\d{3}";
+        
+        public const string broj_telefona = @"(((\()?(00|\+)387(65|66|51)(\))?)|(0(65|66|51)))?[- \/]?\d{3}[ -]?\d{3}";
         public const string mejl_adresa = @"\w+([.]\w+){0,3}@\w+([-.]\w+){0,1}\.\w+([-.]\w+){0,3}";
 
         public const string web_link =
             @"((https?:\/\/){0,1}(www\.){0,1}){1}\w+([-.]\w+){0,1}\.\w+([-.]\w+){0,3}([\w\/?=&]+)?";
 
-        public const string brojevna_konstanta = @"-{0,1}\d+(\.{0,1}\d+){0,1}";
+        public const string brojevna_konstanta = @"-?\d+(\.\d+)?";
         //________________________________________________________
 
 
         public const string link = "http://worldpopulationreview.com/world-cities/";
 
-        public static string getSiteHtml() // uzimanje html sadrzaja sa stranice
+        // returns html content from site
+        public static string getSiteHtml() 
         {
             HttpWebRequest Http = (HttpWebRequest) WebRequest.Create(link);    // throws UriFormatException
             HttpWebResponse WebResponse = (HttpWebResponse) Http.GetResponse();
@@ -62,7 +64,8 @@ namespace MainClass
             return html;
         }
 
-        public static List<string> getCitiesFromHtml() // pravljenje liste gradova iz html sadrzaja
+        // creating list of big cities
+        public static List<string> getCitiesFromHtml() 
         {
             string html = getSiteHtml();
             List<string> cityList = new List<string>();
@@ -83,7 +86,8 @@ namespace MainClass
             return cityList;
         }
 
-        public static string makeCityRegexString() // pravljenje regexPatterna od liste gradova
+        // creating regexPattern from city list
+        public static string makeCityRegexString() 
         {
             var cities = getCitiesFromHtml();
 

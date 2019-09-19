@@ -8,7 +8,7 @@ namespace MainClass
 {
     public class BNFMaker
     {
-        public List<BNFCollection> bnfCollections; // make it private
+        public List<BNFCollection> bnfCollections { get; }
 
         public BNFMaker() => bnfCollections = new List<BNFCollection>(); // one line constructor
 
@@ -32,7 +32,7 @@ namespace MainClass
         {
             Regex nonTerminalRegex = new Regex(RegexAndPatterns.nonTerminalRegexString);
 
-            for (int i = 0; i < bnfCollections.Count; i++) // mozda je dovoljno samo za prvi cvor
+            for (int i = 0; i < bnfCollections.Count; i++) // TODO: mozda je dovoljno samo za prvi cvor
             {
                 // bool flag = false;
 
@@ -59,6 +59,9 @@ namespace MainClass
                 bnfCollections[i].regex = bnfCollections[i].regex.Replace("\"", "");
                 bnfCollections[i].regex = bnfCollections[i].regex.Replace(" |", "|");
                 bnfCollections[i].regex = bnfCollections[i].regex.Replace("| ", "|");
+
+                bnfCollections[i].token = bnfCollections[i].token.TrimStart('<');
+                bnfCollections[i].token = bnfCollections[i].token.TrimEnd('>');
             }
         }
 
@@ -126,9 +129,9 @@ namespace MainClass
             StreamReader configFileReader = new StreamReader(configFile);
             string readLine = null;
 
-
             Regex bnfLineRegex = new Regex(RegexAndPatterns.BNFLineRegexString, RegexOptions.IgnorePatternWhitespace);
             int lineNumber = 1;
+
             while ((readLine = configFileReader.ReadLine()) != null)
             {
                 if (bnfLineRegex.IsMatch(readLine))
@@ -142,6 +145,8 @@ namespace MainClass
 
                 lineNumber++;
             }
+
+            configFileReader.Close();
         }
     }
 }

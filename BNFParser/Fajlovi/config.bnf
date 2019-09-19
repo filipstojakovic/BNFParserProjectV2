@@ -1,7 +1,5 @@
-<S> -> <subject> <predicate>
-<subject> -> <article> <noun>
-<predicate> -> <verb> <direct-object>
-<direct-object> -> <article> <noun>
-<article> -> THE | A
-<noun> -> MAN | DOG
-<verb> -> BITES | PETS
+<student> ::= <ime> <prezime> <broj> <email>
+<ime> ::= regex(Stefan)
+<prezime> ::= "Gostic"
+<broj> ::= broj_telefona
+<email> ::= mejl_adresa
