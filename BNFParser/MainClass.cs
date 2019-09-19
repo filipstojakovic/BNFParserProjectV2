@@ -9,21 +9,20 @@ namespace MainClass
 {
     internal class Program
     {
-        public const string configFile =
+        public const string configFile1 =
             @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
-        public const string configFile1 = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\config.bnf";
+        public const string configFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
 
-        public const string intputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
-        public const string outputFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
+        public const string intputFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
+        public const string intputFile = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
 
-        public const string intputFile1 = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
         public const string outputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
 
         
         public static void Main(string[] args)
         {
-            Console.WriteLine(RegexAndPatterns.BNFLineRegexString); // config.bnf 
+//            Console.WriteLine(RegexAndPatterns.BNFLineRegexString); // config.bnf 
 
             BNFMaker bnfMaker = new BNFMaker();
 
@@ -31,8 +30,7 @@ namespace MainClass
             {
                 bnfMaker.readConfigFile(configFile);
 
-                Console.WriteLine("config regex: " + RegexAndPatterns.BNFLineRegexString);
-                Console.WriteLine("Input: " + new StreamReader(intputFile).ReadLine());
+//                Console.WriteLine("config regex: " + RegexAndPatterns.BNFLineRegexString);
 
                 bnfMaker.bnfCollections.ForEach(x =>
                     {
@@ -41,8 +39,11 @@ namespace MainClass
                     }
                 );
 
-//                XMLCreator xmlCreator = new XMLCreator();
-//                xmlCreator.createXML(intputFile, outputFile, bnfMaker.bnfCollections);
+                Console.WriteLine('\n'+bnfMaker.bnfCollections[0].regex);
+                Console.WriteLine("Input: " + new StreamReader(intputFile).ReadLine());
+                Console.WriteLine("result:");
+                XMLCreator xmlCreator = new XMLCreator();
+                xmlCreator.createXML(intputFile, outputFile, bnfMaker.bnfCollections);
 
             }
             catch (FileNotFoundException ex)

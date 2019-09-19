@@ -32,23 +32,28 @@ namespace MainClass
         {
             Regex nonTerminalRegex = new Regex(RegexAndPatterns.nonTerminalRegexString);
 
-            for (int i = 0; i < bnfCollections.Count; i++) // TODO: mozda je dovoljno samo za prvi cvor
+            for (int i = 1; i < bnfCollections.Count; i++) // skip first and swap all nonterminal with terminal
             {
-                // bool flag = false;
-
+                bool flag = false;
                 Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex);
                 while (nonTerminalMatch.Success)
                 {
-                    bool flag = false;
-                    for (int j = 0; j < bnfCollections.Count; j++)
+                    if (nonTerminalMatch.Value == bnfCollections[i].token)
                     {
-                        if (nonTerminalMatch.Value == bnfCollections[j].token)
+                        bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "");
+                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + ")+";
+                    }
+                    else
+                    {
+                        for (int j = 0; j < bnfCollections.Count; j++)
                         {
-                            bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollections[j].regex + ")");
-                            flag = true;
+                            if (nonTerminalMatch.Value == bnfCollections[j].token)
+                            {
+                                bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollections[j].regex + ")");
+                                flag = true;
+                            }
                         }
                     }
-
 
                     if (flag)
                         nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex); // u slucaju da postoji jos ne terminalnih cvorova 
@@ -60,9 +65,36 @@ namespace MainClass
                 bnfCollections[i].regex = bnfCollections[i].regex.Replace(" |", "|");
                 bnfCollections[i].regex = bnfCollections[i].regex.Replace("| ", "|");
 
-                bnfCollections[i].token = bnfCollections[i].token.TrimStart('<');
-                bnfCollections[i].token = bnfCollections[i].token.TrimEnd('>');
+//                bnfCollections[i].token = bnfCollections[i].token.TrimStart('<');
+//                bnfCollections[i].token = bnfCollections[i].token.TrimEnd('>');
             }
+
+            // swap first regex
+            Match firstNonTerminalMatch = nonTerminalRegex.Match(bnfCollections[0].regex);
+            while (firstNonTerminalMatch.Success)
+            {
+                if (firstNonTerminalMatch.Value == bnfCollections[0].token)
+                {
+                }
+                else
+                {
+                    for (int i = 1; i < bnfCollections.Count; i++)
+                    {
+                        if (bnfCollections[i].token == firstNonTerminalMatch.Value)
+                        {
+                            bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, bnfCollections[i].regex);
+                            break;
+                        }
+                    }
+                }
+
+                firstNonTerminalMatch = firstNonTerminalMatch.NextMatch();
+            }
+
+            bnfCollections[0].regex = bnfCollections[0].regex.Replace(")+ ", ")+");
+
+            for (int i = 0; i < bnfCollections.Count; i++)
+                bnfCollections[i].token = bnfCollections[i].token.Trim('<', '>');
         }
 
 

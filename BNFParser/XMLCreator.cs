@@ -39,6 +39,7 @@ namespace MainClass
             XmlWriter = XmlWriter.Create(outputPath, settings);
             if (inputMatch.Success)
             {
+                Console.WriteLine("Matched Successful");
                 List<string> matchedToken = new string[bnfCollections.Count].Select(x => "").ToList();
 //                List<string> matchedToken = new List<string>(); //
 //                for (int i = 0; i < bnfCollections.Count; i++)
