@@ -9,10 +9,12 @@ namespace MainClass
 {
     internal class Program
     {
-        public const string configFile =
+        public const string configFile2 =
             @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
         public const string configFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
+
+        public const string configFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.txt";
 
         public const string intputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
         public const string intputFile1 = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
@@ -41,7 +43,7 @@ namespace MainClass
 
                 Console.WriteLine('\n'+bnfMaker.bnfCollections[0].regex);
                 Console.WriteLine("Input: " + new StreamReader(intputFile).ReadLine());
-                Console.WriteLine("result:");
+                Console.Write("result: ");
                 XMLCreator xmlCreator = new XMLCreator();
                 xmlCreator.createXML(intputFile, outputFile, bnfMaker.bnfCollections);
 

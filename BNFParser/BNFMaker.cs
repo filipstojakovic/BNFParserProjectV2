@@ -32,7 +32,7 @@ namespace MainClass
         {
             Regex nonTerminalRegex = new Regex(RegexAndPatterns.nonTerminalRegexString);
 
-            for (int i = 1; i < bnfCollections.Count; i++) // skip first and swap all nonterminal with terminal
+            for (int i = bnfCollections.Count-1; i>=0; i--) // skip first and swap all nonterminal with terminal
             {
                 bool flag = false;
                 Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex);
@@ -45,11 +45,11 @@ namespace MainClass
                     }
                     else
                     {
-                        for (int j = 0; j < bnfCollections.Count; j++)
+                        foreach (var bnfCollection in bnfCollections)
                         {
-                            if (nonTerminalMatch.Value == bnfCollections[j].token)
+                            if (nonTerminalMatch.Value == bnfCollection.token)
                             {
-                                bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollections[j].regex + ")");
+                                bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollection.regex + ")");
                                 flag = true;
                             }
                         }
@@ -64,31 +64,31 @@ namespace MainClass
                 bnfCollections[i].regex = removeSpaceAndQuote(bnfCollections[i].regex);
             }
 
-            // swap first regex all nonterminal with terminal
-            Match firstNonTerminalMatch = nonTerminalRegex.Match(bnfCollections[0].regex);
-            while (firstNonTerminalMatch.Success)
-            {
-                if (firstNonTerminalMatch.Value == bnfCollections[0].token)
-                {
-                    bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, "");
-                    bnfCollections[0].regex = "(" + bnfCollections[0].regex + "?)+";
-                }
-                else
-                {
-                    for (int i = 1; i < bnfCollections.Count; i++)
-                    {
-                        if (bnfCollections[i].token == firstNonTerminalMatch.Value)
-                        {
-                            bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, bnfCollections[i].regex);
-                            break;
-                        }
-                    }
-                }
+//            // swap first regex all nonterminal with terminal
+//            Match firstNonTerminalMatch = nonTerminalRegex.Match(bnfCollections[0].regex);
+//            while (firstNonTerminalMatch.Success)
+//            {
+//                if (firstNonTerminalMatch.Value == bnfCollections[0].token)
+//                {
+//                    bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, "");
+//                    bnfCollections[0].regex = "(" + bnfCollections[0].regex + "?)+";
+//                }
+//                else
+//                {
+//                    for (int i = 1; i < bnfCollections.Count; i++)
+//                    {
+//                        if (bnfCollections[i].token == firstNonTerminalMatch.Value)
+//                        {
+//                            bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, bnfCollections[i].regex);
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                firstNonTerminalMatch = firstNonTerminalMatch.NextMatch();
+//            }
 
-                firstNonTerminalMatch = firstNonTerminalMatch.NextMatch();
-            }
-
-            bnfCollections[0].regex = removeSpaceAndQuote(bnfCollections[0].regex);
+//            bnfCollections[0].regex = removeSpaceAndQuote(bnfCollections[0].regex);
 
             for (int i = 0; i < bnfCollections.Count; i++)
                 bnfCollections[i].token = bnfCollections[i].token.Trim('<', '>');

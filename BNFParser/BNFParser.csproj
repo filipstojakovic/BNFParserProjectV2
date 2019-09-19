@@ -50,7 +50,6 @@
     <Compile Include="XMLCreator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Fajlovi\BigCities.csv" />
     <Content Include="Fajlovi\bnfExample" />
     <Content Include="Fajlovi\config.bnf" />
     <Content Include="Fajlovi\myConfig.bnf" />

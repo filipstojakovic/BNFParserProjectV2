@@ -1,4 +1,4 @@
-<S> ::= <subject> <predicate> <S>
+<S> ::= <subject> <predicate>
 <subject> ::= <article> <noun>
 <predicate> ::= <verb> <direct-object>
 <direct-object> ::= <article> <noun>
