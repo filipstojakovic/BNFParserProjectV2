@@ -6,33 +6,33 @@ using System.Text.RegularExpressions;
 
 namespace MainClass
 {
-    public class BNFMaker
+    public class BnfMaker
     {
         public List<BNFCollection> bnfCollections { get; }
 
-        public BNFMaker() => bnfCollections = new List<BNFCollection>(); // one line constructor
+        public BnfMaker() => bnfCollections = new List<BNFCollection>(); // one line constructor
 
         // reading and making
-        public void readConfigFile(string configFile)
+        public void ReadConfigFile(string configFile)
         {
             if (!File.Exists(configFile))
                 throw new FileNotFoundException("config file path not valid!");
 
-            this.getAllLines(configFile);
+            this.GetAllLines(configFile);
 
-            this.checkForDuplicates();
+            this.CheckForDuplicates();
 
-            this.swapTableExpressions();
+            this.SwapTableExpressions();
 
-            this.removeNonTerminlNodes();
+            this.RemoveNonTerminlNodes();
         }
 
-        // remove all non-terminal nodes from regex. Ne radi REKURZIJA
-        private void removeNonTerminlNodes()
+        // remove all non-terminal nodes from regex.
+        private void RemoveNonTerminlNodes()
         {
-            Regex nonTerminalRegex = new Regex(RegexAndPatterns.nonTerminalRegexString);
+            Regex nonTerminalRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
 
-            for (int i = bnfCollections.Count-1; i>=0; i--) // skip first and swap all nonterminal with terminal
+            for (int i = bnfCollections.Count-1; i>=0; i--) // backwards is better
             {
                 bool flag = false;
                 Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex);
@@ -61,41 +61,15 @@ namespace MainClass
                         nonTerminalMatch = nonTerminalMatch.NextMatch();
                 }
 
-                bnfCollections[i].regex = removeSpaceAndQuote(bnfCollections[i].regex);
+                bnfCollections[i].regex = RemoveSpaceAndQuote(bnfCollections[i].regex);
             }
 
-//            // swap first regex all nonterminal with terminal
-//            Match firstNonTerminalMatch = nonTerminalRegex.Match(bnfCollections[0].regex);
-//            while (firstNonTerminalMatch.Success)
-//            {
-//                if (firstNonTerminalMatch.Value == bnfCollections[0].token)
-//                {
-//                    bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, "");
-//                    bnfCollections[0].regex = "(" + bnfCollections[0].regex + "?)+";
-//                }
-//                else
-//                {
-//                    for (int i = 1; i < bnfCollections.Count; i++)
-//                    {
-//                        if (bnfCollections[i].token == firstNonTerminalMatch.Value)
-//                        {
-//                            bnfCollections[0].regex = bnfCollections[0].regex.Replace(firstNonTerminalMatch.Value, bnfCollections[i].regex);
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                firstNonTerminalMatch = firstNonTerminalMatch.NextMatch();
-//            }
-
-//            bnfCollections[0].regex = removeSpaceAndQuote(bnfCollections[0].regex);
-
-            for (int i = 0; i < bnfCollections.Count; i++)
-                bnfCollections[i].token = bnfCollections[i].token.Trim('<', '>');
+            foreach (var bnfCollection in bnfCollections)
+                bnfCollection.token = bnfCollection.token.Trim('<', '>');
         }
 
         //remove spaces and quotes
-        private string removeSpaceAndQuote(string str)
+        private string RemoveSpaceAndQuote(string str)
         {
             str = str.Replace(")+ ", ")+");
             str = str.Replace("\"", "");
@@ -106,11 +80,11 @@ namespace MainClass
 
 
         // swap table expressions with there regexString and also regex patternt
-        private void swapTableExpressions()
+        private void SwapTableExpressions()
         {
-            string cityRegexString = RegexAndPatterns.makeCityRegexString(); // mozda try/catch za internet
+            string cityRegexString = RegexAndPatterns.MakeCityRegexString(); // mozda try/catch za internet
 
-            string tableExpressionAndRegex = RegexAndPatterns.allTableStandardExpressions + '|' + RegexAndPatterns.regexRegexString;
+            string tableExpressionAndRegex = RegexAndPatterns.AllTableStandardExpressions + '|' + RegexAndPatterns.RegexRegexString;
             Regex tableRegex = new Regex(tableExpressionAndRegex);
 
             foreach (var bnfCollection in bnfCollections)
@@ -122,16 +96,16 @@ namespace MainClass
                     switch (standardExpressionMatch.Value)
                     {
                         case "broj_telefona":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.broj_telefona + ")");
+                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojTelefona + ")");
                             break;
                         case "mejl_adresa":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.mejl_adresa + ")");
+                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.MejlAdresa + ")");
                             break;
                         case "web_link":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.web_link + ")");
+                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.WebLink + ")");
                             break;
                         case "brojevna_konstanta":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.brojevna_konstanta + ")");
+                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojevnaKonstanta + ")");
                             break;
                         case "veliki_grad":
                             bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + cityRegexString + ")");
@@ -150,7 +124,7 @@ namespace MainClass
         }
 
         // finding duplicates and combining them
-        private void checkForDuplicates()
+        private void CheckForDuplicates()
         {
             for (int i = 0; i < bnfCollections.Count; i++)
             for (int j = i + 1; j < bnfCollections.Count; j++)
@@ -163,12 +137,12 @@ namespace MainClass
         }
 
         // geting all lines from config file
-        private void getAllLines(string configFile)
+        private void GetAllLines(string configFile)
         {
             StreamReader configFileReader = new StreamReader(configFile);
             string readLine = null;
 
-            Regex bnfLineRegex = new Regex(RegexAndPatterns.BNFLineRegexString, RegexOptions.IgnorePatternWhitespace);
+            Regex bnfLineRegex = new Regex(RegexAndPatterns.BnfLineRegexString, RegexOptions.IgnorePatternWhitespace);
             int lineNumber = 1;
 
             while ((readLine = configFileReader.ReadLine()) != null)
@@ -180,7 +154,7 @@ namespace MainClass
                     bnfCollections.Add(new BNFCollection(splitLine[0], splitLine[1], splitLine[1]));
                 }
                 else
-                    throw new BNFLineExceptions(lineNumber, readLine);
+                    throw new BnfLineExceptions(lineNumber, readLine);
 
                 lineNumber++;
             }

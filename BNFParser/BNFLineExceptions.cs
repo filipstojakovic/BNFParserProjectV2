@@ -2,11 +2,11 @@ using System;
 
 namespace MainClass
 {
-    public class BNFLineExceptions : Exception
+    public class BnfLineExceptions : Exception
     {
-        public const string lineError = "Error in line number ";
+        private const string LineError = "Error in line number ";
 
-        public BNFLineExceptions(int lineNum, string line) : base(lineError + lineNum + ". : " + line)
+        public BnfLineExceptions(int lineNum, string line) : base(LineError + lineNum + ". : " + line)
         {
         }
     }

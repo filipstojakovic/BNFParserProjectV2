@@ -26,11 +26,11 @@ namespace MainClass
         {
 //            Console.WriteLine(RegexAndPatterns.BNFLineRegexString); // config.bnf 
 
-            BNFMaker bnfMaker = new BNFMaker();
+            BnfMaker bnfMaker = new BnfMaker();
 
             try
             {
-                bnfMaker.readConfigFile(configFile);
+                bnfMaker.ReadConfigFile(configFile);
 
 //                Console.WriteLine("config regex: " + RegexAndPatterns.BNFLineRegexString);
 
@@ -44,8 +44,8 @@ namespace MainClass
                 Console.WriteLine('\n'+bnfMaker.bnfCollections[0].regex);
                 Console.WriteLine("Input: " + new StreamReader(intputFile).ReadLine());
                 Console.Write("result: ");
-                XMLCreator xmlCreator = new XMLCreator();
-                xmlCreator.createXML(intputFile, outputFile, bnfMaker.bnfCollections);
+                XmlCreator xmlCreator = new XmlCreator();
+                xmlCreator.CreateXml(intputFile, outputFile, bnfMaker.bnfCollections);
 
             }
             catch (FileNotFoundException ex)
@@ -53,7 +53,7 @@ namespace MainClass
                 Console.WriteLine("Invalid File path");
                 Console.WriteLine(ex);
             }
-            catch (BNFLineExceptions ex)
+            catch (BnfLineExceptions ex)
             {
                 Console.WriteLine(ex);
             }
