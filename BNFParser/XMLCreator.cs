@@ -41,13 +41,9 @@ namespace MainClass
             {
                 Console.WriteLine("Matched Successful");
                 List<string> matchedToken = new string[bnfCollections.Count].Select(x => "").ToList();
-//                List<string> matchedToken = new List<string>(); //
-//                for (int i = 0; i < bnfCollections.Count; i++)
-//                {
-//                    matchedToken.Add("");
-//                }
                 
-                matchedToken.Add(inputMatch.Value);
+//                matchedToken.Add(inputMatch.Value);
+                matchedToken[0] = inputMatch.Value;
 
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement(bnfCollections[0].token); // insert root

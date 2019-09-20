@@ -41,7 +41,7 @@ namespace MainClass
                     if (nonTerminalMatch.Value == bnfCollections[i].token)
                     {
                         bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "");
-                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + " ?)+";
+                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + "?)+";
                     }
                     else
                     {
