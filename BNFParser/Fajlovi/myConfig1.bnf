@@ -1,8 +1,0 @@
-<verb> ::= "bites" | "PETS" <dga065182>
-<S> ::= <subject> "PETS" <predicate> |	regex(<hello>)
-<verb> ::= "up-down" | "065/182-135"
-<article> ::= "THE" | "A jej" | web_link
-<subject> ::= <article> <noun> regex(nebojsa peder)
-<predicate> ::= <verb>	<direct-object>
-<direct-object> ::= <article> <noun>
-<noun> ::= "MAN" | "dog"

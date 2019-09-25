@@ -1,5 +1,6 @@
-<student> ::= <ime> <prezime> <broj> <email>
+<student> ::= <ime> <prezime> <broj> <email> <grad>
 <ime> ::= regex(\w+)
-<prezime> ::= "Gostic"
+<prezime> ::= "Stojakovic" | "Fipa" | <prezime>
 <broj> ::= broj_telefona
 <email> ::= mejl_adresa
+<grad> ::= "iz" veliki_grad

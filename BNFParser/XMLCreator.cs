@@ -10,73 +10,58 @@ namespace MainClass
 {
     public class XmlCreator
     {
-        private XmlWriter xmlWriter;// { get; set; }
-        private XmlWriterSettings settings;
+        private XmlWriter _xmlWriter; // { get; set; }
+        private XmlWriterSettings _settings;
 
         public XmlCreator()
         {
-            settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.IndentChars = "\t";
-            settings.NewLineOnAttributes = true;
+            _settings = new XmlWriterSettings();
+            _settings.Indent = true;
+            _settings.IndentChars = "\t";
+            _settings.NewLineOnAttributes = true;
         }
 
 
         // creating the XML file
-        public void CreateXml(string inputPath, string outputPath, List<BNFCollection> bnfCollections)
+        public void CreateXml(string inputPath, string outputPath, List<BnfCollection> bnfCollections)
         {
             StreamReader streamReader = new StreamReader(inputPath);
             string readLine = streamReader.ReadLine();
             streamReader.Close();
-            if(readLine==null)
+            if (readLine == null)
                 throw new Exception("input file readline is null!");
 
-            string bnfFinalRegex = bnfCollections[0].regex;
-            bnfFinalRegex = "^" + bnfFinalRegex + "$";
-            Regex bnfMatchRegex = new Regex(bnfFinalRegex);
-            Match inputMatch = bnfMatchRegex.Match(readLine);
+            List<string> matchedToken = new string[bnfCollections.Count].Select(x => "").ToList();
+            matchedToken[0] = readLine;
 
-            xmlWriter = XmlWriter.Create(outputPath, settings);
-            if (inputMatch.Success)
+            _xmlWriter = XmlWriter.Create(outputPath, _settings);
+            _xmlWriter.WriteStartDocument();
+            _xmlWriter.WriteStartElement(bnfCollections[0].Token); // insert root
+
+            for (int i = 0; i < bnfCollections.Count; i++)
             {
-                Console.WriteLine("Matched Successful");
-                List<string> matchedToken = new string[bnfCollections.Count].Select(x => "").ToList();
-                
-//                matchedToken.Add(inputMatch.Value);
-                matchedToken[0] = inputMatch.Value;
+                Regex nonTerminalRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
+                Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].Definition);
 
-                xmlWriter.WriteStartDocument();
-                xmlWriter.WriteStartElement(bnfCollections[0].token); // insert root
-
-
-                for (int i = 0; i < bnfCollections.Count; i++)
+                while (nonTerminalMatch.Success)
                 {
-                    Regex nonTerminalRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
-                    Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].definition);
-
-                    while (nonTerminalMatch.Success)
+                    string nonTerminalValue = nonTerminalMatch.Value.Trim('<', '>');
+                    for (int j = 0; j < bnfCollections.Count; j++)
                     {
-                        string nonTerminalValue = nonTerminalMatch.Value.Trim('<', '>');
-                        for (int j = 0; j < bnfCollections.Count; j++)
+                        if (bnfCollections[j].Token == nonTerminalValue)
                         {
-                            if (bnfCollections[j].token == nonTerminalValue)
-                            {
-                                WriteInXml(bnfCollections, j, i, matchedToken);
-                                break;
-                            }
+                            WriteInXml(bnfCollections, j, i, matchedToken);
+                            break;
                         }
-
-                        nonTerminalMatch = nonTerminalMatch.NextMatch();
                     }
-                }
 
-                xmlWriter.WriteEndElement();
-                xmlWriter.Close();
+                    nonTerminalMatch = nonTerminalMatch.NextMatch();
+                }
             }
-            else
-            {
-                Console.WriteLine("bnf and input do not match");
-            }
+
+            _xmlWriter.WriteEndElement();
+            _xmlWriter.Close();
+            
         }
 
         // check if definition has nonterminal token
@@ -90,18 +75,18 @@ namespace MainClass
         }
 
         // recursion - finding terminal token and writing XML tree
-        private void WriteInXml(List<BNFCollection> bnfCollections, int tokenIndex, int listIndex, List<string> matchedToken)
+        private void WriteInXml(List<BnfCollection> bnfCollections, int tokenIndex, int listIndex, List<string> matchedToken)
         {
-            if ( IsTerminal(bnfCollections[tokenIndex].definition) )
+            if (IsTerminal(bnfCollections[tokenIndex].Definition))
             {
-                Regex subTokenRegex = new Regex(bnfCollections[tokenIndex].regex);
+                Regex subTokenRegex = new Regex(bnfCollections[tokenIndex].Regex);
                 Match subTokenMatch = subTokenRegex.Match(matchedToken[listIndex]);
 
                 if (subTokenMatch.Success)
                 {
-                    xmlWriter.WriteStartElement(bnfCollections[tokenIndex].token);
-                    xmlWriter.WriteValue(subTokenMatch.Value);
-                    xmlWriter.WriteEndElement();
+                    _xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
+                    _xmlWriter.WriteValue(subTokenMatch.Value);
+                    _xmlWriter.WriteEndElement();
 
                     string tmp = matchedToken[listIndex].Replace(subTokenMatch.Value, "");
                     matchedToken[listIndex] = tmp;
@@ -110,16 +95,16 @@ namespace MainClass
             else
             {
                 Regex tokenRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
-                Match tokenMatcher = tokenRegex.Match(bnfCollections[tokenIndex].token);
+                Match tokenMatcher = tokenRegex.Match(bnfCollections[tokenIndex].Token);
 
-                xmlWriter.WriteStartElement(bnfCollections[tokenIndex].token);
+                _xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
 
                 while (tokenMatcher.Success)
                 {
                     string trimedNonTerminal = tokenMatcher.Value.Trim('<', '>');
                     for (int i = 0; i < bnfCollections.Count; i++)
                     {
-                        if (bnfCollections[i].token == trimedNonTerminal)
+                        if (bnfCollections[i].Token == trimedNonTerminal)
                         {
                             WriteInXml(bnfCollections, i, listIndex, matchedToken);
                             break;
@@ -129,7 +114,7 @@ namespace MainClass
                     tokenMatcher = tokenMatcher.NextMatch();
                 }
 
-                xmlWriter.WriteEndElement();
+                _xmlWriter.WriteEndElement();
             }
         }
     }

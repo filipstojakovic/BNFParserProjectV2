@@ -9,43 +9,45 @@ namespace MainClass
 {
     internal class Program
     {
-        public const string configFile2 =
-            @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
-        public const string configFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
+        public const string ConfigFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.txt";
+        
+        public const string ConfigFile3 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
+        
+        public const string ConfigFile =  @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
-        public const string configFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.txt";
-
-        public const string intputFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
-        public const string intputFile = @"C:\Users\filip\Desktop\formalne_projekat Kajganic\input.txt";
-
-        public const string outputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
+        public const string IntputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
+        public const string OutputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
 
         
         public static void Main(string[] args)
         {
-//            Console.WriteLine(RegexAndPatterns.BNFLineRegexString); // config.bnf 
-
             BnfMaker bnfMaker = new BnfMaker();
-
             try
             {
-                bnfMaker.ReadConfigFile(configFile);
+                bnfMaker.ReadConfigFile(ConfigFile);
 
-//                Console.WriteLine("config regex: " + RegexAndPatterns.BNFLineRegexString);
-
-                bnfMaker.bnfCollections.ForEach(x =>
-                    {
-                        Console.WriteLine(x);
-                        Console.WriteLine();
-                    }
-                );
-
-                Console.WriteLine('\n'+bnfMaker.bnfCollections[0].regex);
-                Console.WriteLine("Input: " + new StreamReader(intputFile).ReadLine());
+//                bnfMaker.BnfCollections.ForEach(x =>
+//                    {
+//                        Console.WriteLine(x);
+//                        Console.WriteLine();
+//                    }
+//                );
+                
+                Console.WriteLine('\n'+bnfMaker.BnfCollections[0].Regex);
+                Console.WriteLine("Input: " + new StreamReader(IntputFile).ReadLine());
                 Console.Write("result: ");
-                XmlCreator xmlCreator = new XmlCreator();
-                xmlCreator.CreateXml(intputFile, outputFile, bnfMaker.bnfCollections);
+                if (bnfMaker.IsInputFileMatched(IntputFile))
+                {
+                    Console.WriteLine("Matched Successful!");
+                    XmlCreator xmlCreator = new XmlCreator();
+                    xmlCreator.CreateXml(IntputFile, OutputFile, bnfMaker.BnfCollections);
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Matched NOT Successful!");
+                }
 
             }
             catch (FileNotFoundException ex)

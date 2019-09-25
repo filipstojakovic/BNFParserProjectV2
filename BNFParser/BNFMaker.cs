@@ -8,9 +8,9 @@ namespace MainClass
 {
     public class BnfMaker
     {
-        public List<BNFCollection> bnfCollections { get; }
+        public List<BnfCollection> BnfCollections { get; }
 
-        public BnfMaker() => bnfCollections = new List<BNFCollection>(); // one line constructor
+        public BnfMaker() => BnfCollections = new List<BnfCollection>(); // one line constructor
 
         // reading and making
         public void ReadConfigFile(string configFile)
@@ -27,45 +27,64 @@ namespace MainClass
             this.RemoveNonTerminlNodes();
         }
 
+        // match input file with regex
+        public bool IsInputFileMatched(string inputFile)
+        {
+            StreamReader streamReader = new StreamReader(inputFile);
+            string readLine = streamReader.ReadLine();
+            streamReader.Close();
+            if (readLine == null)
+                throw new Exception("input file readline is null!");
+
+            string bnfFinalRegex = BnfCollections[0].Regex;
+            bnfFinalRegex = "^" + bnfFinalRegex + "$";
+            Regex bnfMatchRegex = new Regex(bnfFinalRegex);
+            Match inputMatch = bnfMatchRegex.Match(readLine);
+
+            return inputMatch.Success;
+        }
+
         // remove all non-terminal nodes from regex.
         private void RemoveNonTerminlNodes()
         {
             Regex nonTerminalRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
 
-            for (int i = bnfCollections.Count-1; i>=0; i--) // backwards is better
+            for (int i = BnfCollections.Count - 1; i >= 0; i--) // backwards is better
             {
                 bool flag = false;
-                Match nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex);
+                Match nonTerminalMatch = nonTerminalRegex.Match(BnfCollections[i].Regex);
                 while (nonTerminalMatch.Success)
                 {
-                    if (nonTerminalMatch.Value == bnfCollections[i].token)
+                    if (nonTerminalMatch.Value == BnfCollections[i].Token)
                     {
-                        bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "");
-                        bnfCollections[i].regex = "(" + bnfCollections[i].regex + "?)+";
+                        BnfCollections[i].Regex = BnfCollections[i].Regex.Replace(nonTerminalMatch.Value, "");
+                        BnfCollections[i].Regex = BnfCollections[i].Regex.Trim('|'); // JAKO UPITNO
+//                        BnfCollections[i].Regex = "(" + BnfCollections[i].Regex + "?)+";
+                        BnfCollections[i].Regex = "((" + BnfCollections[i].Regex + ") ?)+";
                     }
                     else
                     {
-                        foreach (var bnfCollection in bnfCollections)
+                        foreach (var bnfCollection in BnfCollections)
                         {
-                            if (nonTerminalMatch.Value == bnfCollection.token)
+                            if (nonTerminalMatch.Value == bnfCollection.Token)
                             {
-                                bnfCollections[i].regex = bnfCollections[i].regex.Replace(nonTerminalMatch.Value, "(" + bnfCollection.regex + ")");
+                                BnfCollections[i].Regex = BnfCollections[i].Regex.Replace(nonTerminalMatch.Value, "(" + bnfCollection.Regex + ")");
                                 flag = true;
                             }
                         }
                     }
 
                     if (flag)
-                        nonTerminalMatch = nonTerminalRegex.Match(bnfCollections[i].regex); // u slucaju da postoji jos ne terminalnih cvorova 
+                        nonTerminalMatch = nonTerminalRegex.Match(BnfCollections[i].Regex); // u slucaju da postoji jos ne terminalnih cvorova 
                     else
                         nonTerminalMatch = nonTerminalMatch.NextMatch();
                 }
 
-                bnfCollections[i].regex = RemoveSpaceAndQuote(bnfCollections[i].regex);
+                BnfCollections[i].Regex = RemoveSpaceAndQuote(BnfCollections[i].Regex);
             }
 
-            foreach (var bnfCollection in bnfCollections)
-                bnfCollection.token = bnfCollection.token.Trim('<', '>');
+            foreach (var bnfCollection in BnfCollections)
+                bnfCollection.Token = bnfCollection.Token.Trim('<', '>');
         }
 
         //remove spaces and quotes
@@ -87,34 +106,34 @@ namespace MainClass
             string tableExpressionAndRegex = RegexAndPatterns.AllTableStandardExpressions + '|' + RegexAndPatterns.RegexRegexString;
             Regex tableRegex = new Regex(tableExpressionAndRegex);
 
-            foreach (var bnfCollection in bnfCollections)
+            foreach (var bnfCollection in BnfCollections)
             {
-                Match standardExpressionMatch = tableRegex.Match(bnfCollection.definition);
+                Match standardExpressionMatch = tableRegex.Match(bnfCollection.Definition);
 
                 while (standardExpressionMatch.Success)
                 {
                     switch (standardExpressionMatch.Value)
                     {
                         case "broj_telefona":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojTelefona + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojTelefona + ")");
                             break;
                         case "mejl_adresa":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.MejlAdresa + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.MejlAdresa + ")");
                             break;
                         case "web_link":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.WebLink + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.WebLink + ")");
                             break;
                         case "brojevna_konstanta":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojevnaKonstanta + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + RegexAndPatterns.BrojevnaKonstanta + ")");
                             break;
                         case "veliki_grad":
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + cityRegexString + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + cityRegexString + ")");
                             break;
 
                         default:
                             string regexPattern = standardExpressionMatch.Value.Replace("regex(", "");
                             regexPattern = regexPattern.TrimEnd(')');
-                            bnfCollection.regex = bnfCollection.definition.Replace(standardExpressionMatch.Value, "(" + regexPattern + ")");
+                            bnfCollection.Regex = bnfCollection.Definition.Replace(standardExpressionMatch.Value, "(" + regexPattern + ")");
                             break;
                     }
 
@@ -126,13 +145,13 @@ namespace MainClass
         // finding duplicates and combining them
         private void CheckForDuplicates()
         {
-            for (int i = 0; i < bnfCollections.Count; i++)
-            for (int j = i + 1; j < bnfCollections.Count; j++)
-                if (bnfCollections[i].token == bnfCollections[j].token)
+            for (int i = 0; i < BnfCollections.Count; i++)
+            for (int j = i + 1; j < BnfCollections.Count; j++)
+                if (BnfCollections[i].Token == BnfCollections[j].Token)
                 {
-                    bnfCollections[i].definition += ("|" + bnfCollections[j].definition);
-                    bnfCollections[i].regex = bnfCollections[i].definition;
-                    bnfCollections.RemoveAt(j);
+                    BnfCollections[i].Definition += ("|" + BnfCollections[j].Definition);
+                    BnfCollections[i].Regex = BnfCollections[i].Definition;
+                    BnfCollections.RemoveAt(j);
                 }
         }
 
@@ -151,7 +170,7 @@ namespace MainClass
                 {
                     string[] splitLine = Regex.Split(readLine, "::=").Select(p => p.Trim()).ToArray();
 
-                    bnfCollections.Add(new BNFCollection(splitLine[0], splitLine[1], splitLine[1]));
+                    BnfCollections.Add(new BnfCollection(splitLine[0], splitLine[1], splitLine[1]));
                 }
                 else
                     throw new BnfLineExceptions(lineNumber, readLine);

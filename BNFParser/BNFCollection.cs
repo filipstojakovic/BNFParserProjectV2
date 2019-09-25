@@ -3,27 +3,22 @@ using System.Collections.Generic;
 
 namespace MainClass
 {
-    public class BNFCollection
+    public class BnfCollection
     {
-        public string token { get; set; }        // left side of expression
-        public string definition { get; set; }    // config file token definition
-        public string regex { get; set; }       
+        public string Token { get; set; } // left side of expression
+        public string Definition { get; set; } // config file token definition
+        public string Regex { get; set; }
 
-//        public BNFCollection()
-//        { }
-
-        public BNFCollection(string token, string definition, string regex)
+        public BnfCollection(string token, string definition, string regex)
         {
-            this.token = token;
-            this.definition = definition;
-            this.regex = regex;
+            this.Token = token;
+            this.Definition = definition;
+            this.Regex = regex;
         }
 
         public override string ToString()
         {
-            return "token: "+token + '\n' + "definition: "+definition + '\n' + "regex: "+regex;
-            
+            return "token: " + Token + '\n' + "definition: " + Definition + '\n' + "regex: " + Regex;
         }
-
     }
 }

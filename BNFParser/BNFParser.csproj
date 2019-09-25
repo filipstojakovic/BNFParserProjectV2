@@ -50,13 +50,9 @@
     <Compile Include="XMLCreator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Fajlovi\bnfExample" />
     <Content Include="Fajlovi\config.bnf" />
     <Content Include="Fajlovi\myConfig.bnf" />
-    <Content Include="Fajlovi\myConfig1 (copy 1).bnf" />
-    <Content Include="Fajlovi\myConfig1.bnf" />
     <Content Include="Fajlovi\numberBNF.txt" />
-    <Content Include="Fajlovi\UlazniFajl.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
