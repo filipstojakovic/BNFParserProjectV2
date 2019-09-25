@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -38,7 +39,8 @@ namespace MainClass
         //________________________________________________________
 
 
-        public const string Link = "http://worldpopulationreview.com/world-cities/";
+//        public const string Link1 = "http://worldpopulationreview.com/world-cities/";    // world contries
+        public const string Link = "http://worldpopulationreview.com/continents/cities-in-europe/";
 
         // returns html content from site
         public static string GetSiteHtml() 
@@ -68,7 +70,8 @@ namespace MainClass
             string html = GetSiteHtml();
             List<string> cityList = new List<string>();
 
-            const string cityHtmlString = @"<td><a.*?>([\w ]+)<\/a><\/td>";
+//            const string cityHtmlString1 = @"<td><a.*?>([\w ]+)<\/a><\/td>";    // world contries
+            const string cityHtmlString = @"<tr><td>([\w ]+)<\/td><td><a href=""\/countries\/";    // europe contry
             Regex cityHtmlRegex = new Regex(cityHtmlString);
 
             int i = 0;
@@ -77,7 +80,7 @@ namespace MainClass
                 GroupCollection groups = cityHtmlMatch.Groups;
                 cityList.Add(groups[1].Value.Trim());
                 i++;
-                if (i >= 204)
+                if (i >= 200)    // 204 for world contries
                     break;
             }
 

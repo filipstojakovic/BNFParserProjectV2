@@ -11,17 +11,15 @@ namespace MainClass
     {
 
         public const string ConfigFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.txt";
-        
         public const string ConfigFile3 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
-        
         public const string ConfigFile =  @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
 
         public const string IntputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
         public const string OutputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
 
-        
         public static void Main(string[] args)
         {
+
             BnfMaker bnfMaker = new BnfMaker();
             try
             {
@@ -34,7 +32,7 @@ namespace MainClass
 //                    }
 //                );
                 
-                Console.WriteLine('\n'+bnfMaker.BnfCollections[0].Regex);
+//                Console.WriteLine('\n'+bnfMaker.BnfCollections[0].Regex); // bnfFinalRegex
                 Console.WriteLine("Input: " + new StreamReader(IntputFile).ReadLine());
                 Console.Write("result: ");
                 if (bnfMaker.IsInputFileMatched(IntputFile))
@@ -46,7 +44,7 @@ namespace MainClass
                 }
                 else
                 {
-                    Console.WriteLine("Matched NOT Successful!");
+                    Console.WriteLine("Match NOT Successful!");
                 }
 
             }
