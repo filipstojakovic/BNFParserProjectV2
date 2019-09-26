@@ -10,15 +10,15 @@ namespace MainClass
 {
     public class XmlCreator
     {
-        private XmlWriter _xmlWriter; // { get; set; }
-        private XmlWriterSettings _settings;
+        private XmlWriter xmlWriter; // { get; set; }
+        private XmlWriterSettings settings;
 
         public XmlCreator()
         {
-            _settings = new XmlWriterSettings();
-            _settings.Indent = true;
-            _settings.IndentChars = "\t";
-            _settings.NewLineOnAttributes = true;
+            settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = "\t";
+            settings.NewLineOnAttributes = true;
         }
 
 
@@ -34,9 +34,9 @@ namespace MainClass
             List<string> matchedToken = new string[bnfCollections.Count].Select(x => "").ToList();
             matchedToken[0] = readLine;
 
-            _xmlWriter = XmlWriter.Create(outputPath, _settings);
-            _xmlWriter.WriteStartDocument();
-            _xmlWriter.WriteStartElement(bnfCollections[0].Token); // insert root
+            xmlWriter = XmlWriter.Create(outputPath, settings);
+            xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement(bnfCollections[0].Token); // insert root
 
             for (int i = 0; i < bnfCollections.Count; i++)
             {
@@ -55,12 +55,12 @@ namespace MainClass
                         }
                     }
 
-                    nonTerminalMatch = nonTerminalMatch.NextMatch();
+                    nonTerminalMatch = nonTerminalMatch.NextMatch(); // go to next nonTerminal
                 }
             }
 
-            _xmlWriter.WriteEndElement();
-            _xmlWriter.Close();
+            xmlWriter.WriteEndElement();
+            xmlWriter.Close();
             
         }
 
@@ -80,13 +80,13 @@ namespace MainClass
             if (IsTerminal(bnfCollections[tokenIndex].Definition))
             {
                 Regex subTokenRegex = new Regex(bnfCollections[tokenIndex].Regex);
-                Match subTokenMatch = subTokenRegex.Match(matchedToken[listIndex]);
+                Match subTokenMatch = subTokenRegex.Match(matchedToken[listIndex]); // terminal match in matchedToken
 
-                if (subTokenMatch.Success)
+                if (subTokenMatch.Success)    
                 {
-                    _xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
-                    _xmlWriter.WriteValue(subTokenMatch.Value);
-                    _xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
+                    xmlWriter.WriteValue(subTokenMatch.Value);
+                    xmlWriter.WriteEndElement();
 
                     string tmp = matchedToken[listIndex].Replace(subTokenMatch.Value, "");
                     matchedToken[listIndex] = tmp;
@@ -97,7 +97,7 @@ namespace MainClass
                 Regex tokenRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
                 Match tokenMatcher = tokenRegex.Match(bnfCollections[tokenIndex].Token);
 
-                _xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
+                xmlWriter.WriteStartElement(bnfCollections[tokenIndex].Token);
 
                 while (tokenMatcher.Success)
                 {
@@ -107,6 +107,7 @@ namespace MainClass
                         if (bnfCollections[i].Token == trimedNonTerminal)
                         {
                             WriteInXml(bnfCollections, i, listIndex, matchedToken);
+                            xmlWriter.WriteEndElement();
                             break;
                         }
                     }
@@ -114,7 +115,7 @@ namespace MainClass
                     tokenMatcher = tokenMatcher.NextMatch();
                 }
 
-                _xmlWriter.WriteEndElement();
+                xmlWriter.WriteEndElement();
             }
         }
     }

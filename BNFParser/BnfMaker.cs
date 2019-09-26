@@ -49,17 +49,16 @@ namespace MainClass
         {
             Regex nonTerminalRegex = new Regex(RegexAndPatterns.NonTerminalRegexString);
 
-            for (int i = BnfCollections.Count - 1; i >= 0; i--) // backwards is better
+            for (int i = BnfCollections.Count - 1; i >= 0; i--)
             {
                 bool flag = false;
                 Match nonTerminalMatch = nonTerminalRegex.Match(BnfCollections[i].Regex);
                 while (nonTerminalMatch.Success)
                 {
-                    if (nonTerminalMatch.Value == BnfCollections[i].Token)
+                    if (nonTerminalMatch.Value == BnfCollections[i].Token) // for recursion
                     {
                         BnfCollections[i].Regex = BnfCollections[i].Regex.Replace(nonTerminalMatch.Value, "");
-                        BnfCollections[i].Regex = BnfCollections[i].Regex.Trim('|'); // JAKO UPITNO
-//                        BnfCollections[i].Regex = "(" + BnfCollections[i].Regex + "?)+";
+                        BnfCollections[i].Regex = BnfCollections[i].Regex.Trim('|');
                         BnfCollections[i].Regex = "((" + BnfCollections[i].Regex + ") ?)+";
                     }
                     else
@@ -75,9 +74,9 @@ namespace MainClass
                     }
 
                     if (flag)
-                        nonTerminalMatch = nonTerminalRegex.Match(BnfCollections[i].Regex); // u slucaju da postoji jos ne terminalnih cvorova 
+                        nonTerminalMatch = nonTerminalRegex.Match(BnfCollections[i].Regex); // check Replaced Regex for NonTerminal tokens
                     else
-                        nonTerminalMatch = nonTerminalMatch.NextMatch();
+                        nonTerminalMatch = nonTerminalMatch.NextMatch(); // else continue search
                 }
 
                 BnfCollections[i].Regex = RemoveSpaceAndQuote(BnfCollections[i].Regex);

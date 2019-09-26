@@ -10,15 +10,21 @@ namespace MainClass
     internal class Program
     {
 
-        public const string ConfigFile1 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.txt";
-        public const string ConfigFile3 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
-        public const string ConfigFile =  @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\myConfig.bnf";
+        public static string ConfigFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\config.bnf";
+        public static string ConfigFile2 = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\numberBNF.bnf";
+        public static string ConfigFile1 =  @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\Fajlovi\manDog.bnf";
 
         public const string IntputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\input.txt";
-        public const string OutputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
+        public static string OutputFile = @"C:\Users\filip\RiderProjects\BNFParserProjectV2\BNFParser\output.xml";
 
         public static void Main(string[] args)
         {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            if (args.Length == 2)
+            {
+                ConfigFile = args[0];
+                OutputFile = args[1];
+            }
 
             BnfMaker bnfMaker = new BnfMaker();
             try
@@ -33,6 +39,7 @@ namespace MainClass
 //                );
                 
 //                Console.WriteLine('\n'+bnfMaker.BnfCollections[0].Regex); // bnfFinalRegex
+
                 Console.WriteLine("Input: " + new StreamReader(IntputFile).ReadLine());
                 Console.Write("result: ");
                 if (bnfMaker.IsInputFileMatched(IntputFile))
